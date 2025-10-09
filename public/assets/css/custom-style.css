@@ -1,0 +1,8 @@
+@font-face {
+    font-family: 'naaila';
+    src: url('assets/fonts/fontBBH.ttf');
+}
+
+.font-custom{
+    font-family: 'naaila';
+}
