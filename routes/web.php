@@ -39,6 +39,15 @@ Route::post('question/store', [QuestionController::class, 'store'])
 Route::get('dashboard', [DashboardController::class, 'index'])
     ->name('dashboard');
 
+    
 Route::resource('pelanggan', PelangganController::class);
 
+Route::post('/pelanggan/upload-files', [PelangganController::class, 'uploadFiles'])
+    ->name('pelanggan.upload-files');
+
+Route::delete('/pelanggan/file/{fileId}', [PelangganController::class, 'deleteFile'])
+    ->name('pelanggan.delete-file');
+
 Route::resource('user', UserController::class);
+
+
