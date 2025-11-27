@@ -24,32 +24,21 @@
                 <p class="mb-0">List data seluruh user</p>
             </div>
             <div>
-                <a href="{{ route('pelanggan.create') }}" class="btn btn-success text-white"><i
-                        class="far fa-question-circle me-1"></i> Tambah User</a>
+                <a href="{{ route('user.create') }}" class="btn btn-success text-white">
+                    <i class="far fa-question-circle me-1"></i> Tambah User
+                </a>
             </div>
         </div>
     </div>
 
-    {{-- info tambah data --}}
-    @if (session('create'))
-        <div class="alert alert-info">
-            {!! session('create') !!}
-        </div>
-    @endif
-
-    {{-- info edit data --}}
-    @if (session('update'))
-        <div class="alert alert-info">
-            {!! session('update') !!}
-        </div>
-    @endif
-
-    {{-- info hapus data --}}
-    @if (session('delete'))
-        <div class="alert alert-info">
-            {!! session('delete') !!}
-        </div>
-    @endif
+    {{-- info flash message --}}
+    @foreach (['create', 'update', 'delete', 'success'] as $msg)
+        @if (session($msg))
+            <div class="alert alert-info">
+                {!! session($msg) !!}
+            </div>
+        @endif
+    @endforeach
 
     <div class="row">
         <div class="col-12 mb-4">
@@ -59,21 +48,39 @@
                         <table id="table-pelanggan" class="table table-centered table-nowrap mb-0 rounded">
                             <thead class="thead-light">
                                 <tr>
+                                    <th class="border-0">#</th>
+                                    <th class="border-0">Foto Profil</th>
                                     <th class="border-0">Nama Lengkap</th>
                                     <th class="border-0">Email</th>
-                                    <th class="border-0">Password</th>
                                     <th class="border-0 rounded-end">Action</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 @foreach ($dataUser as $item)
                                     <tr>
+                                        {{-- Nomor urut sesuai pagination --}}
+                                        <td>
+                                            {{ $loop->iteration + ($dataUser->currentPage() - 1) * $dataUser->perPage() }}
+                                        </td>
+
+                                        {{-- FOTO PROFIL --}}
+                                        <td>
+                                            @if ($item->profile_picture)
+                                                <img src="{{ asset('storage/' . $item->profile_picture) }}"
+                                                    alt="{{ $item->name }}" class="avatar rounded-circle"
+                                                    style="width:45px; height:45px; object-fit:cover;">
+                                            @else
+                                                <span class="badge bg-secondary">Tidak ada</span>
+                                            @endif
+                                        </td>
+
+                                        {{-- NAMA & EMAIL --}}
                                         <td>{{ $item->name }}</td>
                                         <td>{{ $item->email }}</td>
-                                        <td>{{ $item->password }}</td>
+
+                                        {{-- AKSI --}}
                                         <td>
-                                            <a href=""
-                                                class="btn btn-info btn-sm">
+                                            <a href="{{ route('user.edit', $item->id) }}" class="btn btn-info btn-sm">
                                                 <svg class="icon icon-xs me-2" data-slot="icon" fill="none"
                                                     stroke-width="1.5" stroke="currentColor" viewBox="0 0 24 24"
                                                     xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
@@ -83,8 +90,10 @@
                                                 </svg>
                                                 Edit
                                             </a>
-                                            <form action=""
-                                                method="POST" style="display:inline">
+
+                                            <form action="{{ route('user.destroy', $item->id) }}" method="POST"
+                                                style="display:inline"
+                                                onsubmit="return confirm('Yakin ingin menghapus user ini?');">
                                                 @csrf
                                                 @method('DELETE')
                                                 <button type="submit" class="btn btn-danger btn-sm">
@@ -104,6 +113,11 @@
 
                             </tbody>
                         </table>
+                    </div>
+
+                    {{-- PAGINATION --}}
+                    <div class="mt-3">
+                        {{ $dataUser->links('pagination::bootstrap-5') }}
                     </div>
                 </div>
             </div>
