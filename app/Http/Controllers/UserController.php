@@ -19,7 +19,7 @@ class UserController extends Controller
     // 🔹 Form tambah user baru
     public function create()
     {
-        return view('admin.user.create');
+        return view('admin.user.create'); 
     }
 
     // 🔹 Simpan user baru ke database
