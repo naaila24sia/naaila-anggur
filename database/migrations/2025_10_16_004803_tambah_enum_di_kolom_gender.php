@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::table('pelanggan', function (Blueprint $table) {
             // Mengubah tipe kolom menjadi ENUM baru dan membuatnya nullable
-            $table->enum('gender', ['Pria', 'Wanita', 'Non-Binary'])->nullable()->change();
+            $table->string('gender')->nullable()->change();
         });
     }
 

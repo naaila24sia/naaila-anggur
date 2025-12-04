@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\AuthController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\QuestionController;
@@ -39,7 +40,7 @@ Route::post('question/store', [QuestionController::class, 'store'])
 Route::get('dashboard', [DashboardController::class, 'index'])
     ->name('dashboard');
 
-    
+
 Route::resource('pelanggan', PelangganController::class);
 
 Route::post('/pelanggan/upload-files', [PelangganController::class, 'uploadFiles'])
@@ -50,4 +51,8 @@ Route::delete('/pelanggan/file/{fileId}', [PelangganController::class, 'deleteFi
 
 Route::resource('user', UserController::class);
 
+Route::get('auth', [AuthController::class, 'index'])->name('auth');
 
+Route::post('auth/login', [AuthController::class, 'login'])->name('auth.login');
+
+Route::get('auth/logout', [AuthController::class, 'logout'])->name('auth.logout');
